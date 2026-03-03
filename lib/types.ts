@@ -8,7 +8,7 @@ export type RequestStatus =
   | "CLOSED"
 
 export interface User {
-  id: string
+  id: number
   name: string
   email: string
   role: UserRole
@@ -19,18 +19,18 @@ export interface User {
 }
 
 export interface ServiceType {
-  id: string
+  id: number
   name: string
   description: string
   icon?: string
 }
 
 export interface ServiceRequest {
-  id: string
-  userId: string
-  serviceType: string
-  serviceTypeId: string
-  description: string
+  id: number
+  userId?: number
+  serviceType?: ServiceType
+  serviceTypeId?: number
+  description?: string
   status: RequestStatus
   priority?: string
   createdAt: string
@@ -38,17 +38,17 @@ export interface ServiceRequest {
 }
 
 export interface StatusHistory {
-  id: string
-  requestId: string
-  status: RequestStatus
-  changedBy: string
+  id: number
+  requestId: number
+  status: string
+  changedBy?: number
   changedAt: string
   notes?: string
 }
 
 export interface Notification {
-  id: string
-  userId: string
+  id: number
+  userId: number
   message: string
   type: string
   read: boolean
@@ -66,9 +66,10 @@ export interface LoginResponse {
 }
 
 export interface CreateRequestPayload {
-  serviceTypeId: string
+  serviceTypeId: number
   description: string
   priority?: string
+  userId?: number
 }
 
 export interface UpdateRequestPayload {

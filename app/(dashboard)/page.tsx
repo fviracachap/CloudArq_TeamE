@@ -172,7 +172,7 @@ export default function DashboardPage() {
                 >
                   <div className="flex flex-col gap-1">
                     <span className="text-sm font-medium text-foreground">
-                      {req.serviceType}
+                      {req.serviceType?.name ?? "Service Request"}
                     </span>
                     <span className="line-clamp-1 text-xs text-muted-foreground">
                       {req.description}

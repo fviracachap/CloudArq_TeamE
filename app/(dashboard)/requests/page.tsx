@@ -56,8 +56,8 @@ export default function RequestsPage() {
     .filter(
       (r) =>
         search === "" ||
-        r.serviceType.toLowerCase().includes(search.toLowerCase()) ||
-        r.description.toLowerCase().includes(search.toLowerCase())
+        (r.serviceType?.name ?? "").toLowerCase().includes(search.toLowerCase()) ||
+        (r.description ?? "").toLowerCase().includes(search.toLowerCase())
     )
     .sort(
       (a, b) =>
@@ -147,7 +147,7 @@ export default function RequestsPage() {
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-medium text-foreground">
-                        {req.serviceType}
+                        {req.serviceType?.name ?? "Service Request"}
                       </span>
                       <span className="text-xs text-muted-foreground">
                         #{req.id}

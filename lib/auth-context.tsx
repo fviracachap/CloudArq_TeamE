@@ -17,7 +17,7 @@ interface AuthContextValue {
   token: string | null
   isLoading: boolean
   login: (email: string, password: string) => Promise<void>
-  loginAsDemo: () => void
+  loginAsDemo: () => Promise<void>
   logout: () => void
 }
 
@@ -85,18 +85,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [router]
   )
 
-  const loginAsDemo = useCallback(() => {
-    const demoUser: User = {
-      id: "demo-001",
-      name: "Demo Resident",
-      email: "demo@comunidad360.com",
-      role: "RESIDENT",
+  const loginAsDemo = useCallback(async () => {
+    try {
+      // Use the real seeded demo account so the backend receives a valid JWT and numeric user ID
+      const response = await loginApi({
+        email: "resident@comunidad360.com",
+        password: "password123",
+      })
+      localStorage.setItem("comunidad360_token", response.token)
+      localStorage.setItem("comunidad360_user", JSON.stringify(response.user))
+      setToken(response.token)
+      setUser(response.user)
+    } catch {
+      // Fallback: offline demo mode (no API calls will work)
+      const demoUser: User = {
+        id: 1,
+        name: "Demo Resident",
+        email: "resident@comunidad360.com",
+        role: "RESIDENT",
+      }
+      localStorage.setItem("comunidad360_token", "offline")
+      localStorage.setItem("comunidad360_user", JSON.stringify(demoUser))
+      setToken("offline")
+      setUser(demoUser)
     }
-    const demoToken = "demo-token"
-    localStorage.setItem("comunidad360_token", demoToken)
-    localStorage.setItem("comunidad360_user", JSON.stringify(demoUser))
-    setToken(demoToken)
-    setUser(demoUser)
     router.push("/")
   }, [router])
 

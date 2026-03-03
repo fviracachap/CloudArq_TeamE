@@ -128,7 +128,7 @@ export default function RequestDetailPage({
     <div className="flex flex-col gap-6">
       <PageHeader
         title={`Request #${request.id}`}
-        description={request.serviceType}
+        description={request.serviceType?.name}
       >
         <div className="flex gap-2">
           <Button variant="ghost" asChild>
@@ -194,7 +194,7 @@ export default function RequestDetailPage({
                 <div>
                   <p className="text-xs text-muted-foreground">Service Type</p>
                   <p className="text-sm font-medium text-foreground">
-                    {request.serviceType}
+                    {request.serviceType?.name ?? "—"}
                   </p>
                 </div>
               </div>

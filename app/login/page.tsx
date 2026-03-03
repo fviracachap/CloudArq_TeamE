@@ -29,6 +29,7 @@ export default function LoginPage() {
   const { login, loginAsDemo } = useAuth()
   const [error, setError] = useState<string | null>(null)
   const [showPassword, setShowPassword] = useState(false)
+  const [isDemoLoading, setIsDemoLoading] = useState(false)
 
   const {
     register,
@@ -44,6 +45,17 @@ export default function LoginPage() {
       await login(data.email, data.password)
     } catch {
       setError("Invalid email or password. Please try again.")
+    }
+  }
+
+  async function handleDemoLogin() {
+    setIsDemoLoading(true)
+    try {
+      await loginAsDemo()
+    } catch {
+      setError("Demo login failed. Make sure the backend is running.")
+    } finally {
+      setIsDemoLoading(false)
     }
   }
 
@@ -156,9 +168,10 @@ export default function LoginPage() {
                 type="button"
                 variant="outline"
                 className="w-full"
-                onClick={loginAsDemo}
+                onClick={handleDemoLogin}
+                disabled={isDemoLoading || isSubmitting}
               >
-                Enter Demo Mode
+                {isDemoLoading ? "Connecting..." : "Enter Demo Mode"}
               </Button>
             </form>
           </CardContent>
