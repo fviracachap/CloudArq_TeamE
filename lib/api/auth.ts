@@ -26,3 +26,17 @@ export async function updateUser(
     body: JSON.stringify(data),
   })
 }
+export type RegisterRequest = {
+  name: string
+  email: string
+  password: string
+  apartment?: string
+  phone?: string
+}
+
+export async function registerUser(data: RegisterRequest): Promise<unknown> {
+  return apiClient("/auth/register", {
+    method: "POST",
+    body: JSON.stringify(data),
+  })
+}
