@@ -43,7 +43,7 @@ export default function DashboardPage() {
   useEffect(() => {
     async function loadRequests() {
       try {
-        const data = await getRequests()
+        const data = await getRequests(user?.id)
         setRequests(data)
       } catch {
         setError("Unable to load requests. The backend may not be available.")
@@ -52,7 +52,7 @@ export default function DashboardPage() {
       }
     }
     loadRequests()
-  }, [])
+  }, [user])
 
   function countByStatus(status: RequestStatus) {
     return requests.filter((r) => r.status === status).length

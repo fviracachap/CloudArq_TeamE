@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { getRequests } from "@/lib/api/requests"
 import type { ServiceRequest, RequestStatus } from "@/lib/types"
+import { useAuth } from "@/lib/auth-context"
 import { PageHeader } from "@/components/page-header"
 import { StatusBadge } from "@/components/status-badge"
 import { Button } from "@/components/ui/button"
@@ -31,6 +32,7 @@ const statusTabs: { label: string; value: RequestStatus | "ALL" }[] = [
 ]
 
 export default function RequestsPage() {
+  const { user } = useAuth()
   const [requests, setRequests] = useState<ServiceRequest[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -40,7 +42,7 @@ export default function RequestsPage() {
   useEffect(() => {
     async function load() {
       try {
-        const data = await getRequests()
+        const data = await getRequests(user?.id)
         setRequests(data)
       } catch {
         setError("Unable to load requests. The backend may not be available.")
@@ -49,7 +51,7 @@ export default function RequestsPage() {
       }
     }
     load()
-  }, [])
+  }, [user])
 
   const filtered = requests
     .filter((r) => activeTab === "ALL" || r.status === activeTab)
