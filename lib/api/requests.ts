@@ -23,8 +23,9 @@ export async function getRequest(id: string): Promise<ServiceRequest> {
   return apiClient<ServiceRequest>(`/requests/${id}`)
 }
 
-export async function getRequests(): Promise<ServiceRequest[]> {
-  return apiClient<ServiceRequest[]>("/requests")
+export async function getRequests(userId?: number): Promise<ServiceRequest[]> {
+  const query = userId !== undefined ? `?userId=${userId}` : ""
+  return apiClient<ServiceRequest[]>(`/requests${query}`)
 }
 
 export async function updateRequest(
