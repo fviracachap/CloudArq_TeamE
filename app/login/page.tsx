@@ -1,5 +1,5 @@
 "use client"
-
+import Link from "next/link"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -29,7 +29,6 @@ export default function LoginPage() {
   const { login, loginAsDemo } = useAuth()
   const [error, setError] = useState<string | null>(null)
   const [showPassword, setShowPassword] = useState(false)
-  const [isDemoLoading, setIsDemoLoading] = useState(false)
 
   const {
     register,
@@ -45,17 +44,6 @@ export default function LoginPage() {
       await login(data.email, data.password)
     } catch {
       setError("Invalid email or password. Please try again.")
-    }
-  }
-
-  async function handleDemoLogin() {
-    setIsDemoLoading(true)
-    try {
-      await loginAsDemo()
-    } catch {
-      setError("Demo login failed. Make sure the backend is running.")
-    } finally {
-      setIsDemoLoading(false)
     }
   }
 
@@ -168,11 +156,16 @@ export default function LoginPage() {
                 type="button"
                 variant="outline"
                 className="w-full"
-                onClick={handleDemoLogin}
-                disabled={isDemoLoading || isSubmitting}
+                onClick={loginAsDemo}
               >
-                {isDemoLoading ? "Connecting..." : "Enter Demo Mode"}
+                Enter Demo Mode
               </Button>
+              <div className="mt-3 text-center text-sm text-muted-foreground">
+  Don&apos;t have an account?{" "}
+  <Link href="/register" className="text-primary underline-offset-4 hover:underline">
+    Create one
+  </Link>
+</div>
             </form>
           </CardContent>
         </Card>
