@@ -13,12 +13,12 @@ export async function login(data: LoginRequest): Promise<LoginResponse> {
   })
 }
 
-export async function getUser(id: string): Promise<User> {
+export async function getUser(id: number): Promise<User> {
   return apiClient<User>(`/users/${id}`)
 }
 
 export async function updateUser(
-  id: string,
+  id: number,
   data: UpdateUserPayload
 ): Promise<User> {
   return apiClient<User>(`/users/${id}`, {
